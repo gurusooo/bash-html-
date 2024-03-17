@@ -35,10 +35,10 @@ get_users_info()
     echo "<h2>List of users and groups:</h2>"
     echo "<table border='1'>"
     echo "<tr><th>User</th><th>Groups</th></tr>"
-        while IFS=: read -r user _ uid gid _ home shell; do
-            groups=$(groups $user | cut -d' ' -f4-)
-            echo "<tr><td>$user</td><td>$groups</td></tr>"
-        done < /etc/passwd
+    while IFS=: read -r user _ uid gid _ home shell; do #команда read разбивает строку на поля двоеточиями, обрабатывем файл /etc/passwd
+        group=$(id -g -n $user) #id - идентификатор юзера и группы, g - вывод айди группы, n - вывод имени группы, user - для кого мы ищем номер группы
+        echo "<tr><td>$user</td><td>$group ($gid)</td></tr>" #выводим имя юзера, имя группы и её номер
+    done < /etc/passwd #операции совершаются пока мы не прочитаем весь файл /etc/passwd, в котором содержится информация о зарегистрированных пользователях
     echo "</table>"
 }
 
